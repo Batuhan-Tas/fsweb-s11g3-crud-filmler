@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import axios from "axios";
 
-const EditMovieForm = (props) => {
+const AddMovieForm = (props) => {
   const { id } = useParams();
   const { push } = useHistory();
 
@@ -17,12 +17,6 @@ const EditMovieForm = (props) => {
     description: "",
   });
 
-  useEffect(() => {
-    axios.get(`http://localhost:9000/api/movies/${id}`).then((res) => {
-      setMovie(res.data);
-    });
-  }, []);
-
   const handleChange = (e) => {
     setMovie({
       ...movie,
@@ -33,10 +27,10 @@ const EditMovieForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:9000/api/movies/${id}`, movie)
+      .post(`http://localhost:9000/api/movies/`, movie)
       .then((res) => {
         setMovies(res.data);
-        push(`/movies/${movie.id}`);
+        push(`/movies/`);
       })
       .catch((err) => {
         console.log(err);
@@ -50,7 +44,7 @@ const EditMovieForm = (props) => {
       <form onSubmit={handleSubmit}>
         <div className="p-5 pb-3 border-b border-zinc-200">
           <h4 className="text-xl font-bold">
-            Düzenleniyor <strong>{movie.title}</strong>
+            Yeni Film Ekle <strong>{movie.title}</strong>
           </h4>
         </div>
 
@@ -108,6 +102,7 @@ const EditMovieForm = (props) => {
           <button
             type="submit"
             className="myButton bg-green-700 hover:bg-green-600"
+            onClick={handleSubmit}
           >
             Ekle
           </button>
@@ -117,4 +112,4 @@ const EditMovieForm = (props) => {
   );
 };
 
-export default EditMovieForm;
+export default AddMovieForm;
